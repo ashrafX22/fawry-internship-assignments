@@ -1,14 +1,13 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreamsExample {
@@ -69,10 +68,27 @@ public class StreamsExample {
 
         banner("Average price for all books in the library");
 
-        banner("Average price for all books in the library - lambda");
-        double averagePrice = authors.stream().flatMapToDouble(author -> author.books.stream().mapToDouble(Book::getPrice)).average().orElse(0);
+        Function<Author,List<Book>> authorsBooksFunction = new Function<Author,List<Book>>() {
+            @Override
+            public List<Book> apply(Author author) {
+                return author.books;
+            }
+        };
+        ToDoubleFunction<Book> bookPrice = new ToDoubleFunction<Book>() {
+            @Override
+            public double applyAsDouble(Book book) {
+                return book.price;
+            }
+        };
+
+
+
+        double averagePrice = authors.stream().map(authorsBooksFunction).mapToDouble(authorBooks -> authorBooks.stream().mapToDouble(bookPrice).sum()).average().orElse(0);
         System.out.println(averagePrice);
 
+        banner("Average price for all books in the library - lambda");
+        double averagePriceLambda = authors.stream().map(author -> author.books).mapToDouble(authorBooks -> authorBooks.stream().mapToDouble(book->book.price).sum()).average().orElse(0);
+        System.out.println(averagePriceLambda);
 
         banner("Active authors that have at least one published book");
         List<Author> activeAuthors =  authors.stream().filter(activeAuthorPredicate).collect(Collectors.toList());
