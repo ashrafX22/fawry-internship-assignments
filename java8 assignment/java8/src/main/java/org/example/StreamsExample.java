@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class StreamsExample {
 
@@ -57,7 +58,7 @@ public class StreamsExample {
         Predicate<Author> activeBooksPredicate = new Predicate<Author>(){
             @Override
             public boolean test(Author author) {
-               return author.books.stream().anyMatch(publishedBooks);
+               return author.books.stream().anyMatch(book -> book.published);
             }
         };
         authors.stream().filter(activeBooksPredicate).forEach(authorPrintConsumer);
@@ -71,10 +72,11 @@ public class StreamsExample {
 
 
         banner("Active authors that have at least one published book");
-        // TODO With functional interfaces declared
-
+        List<Author> activeAuthors =  authors.stream().filter(activeAuthorPredicate).collect(Collectors.toList());
+        List<Author> activeAuthorsWithActiveBooks = activeAuthors.stream().filter(activeBooksPredicate).collect(Collectors.toList());
+        activeAuthorsWithActiveBooks.forEach(System.out::println);
         banner("Active authors that have at least one published book - lambda");
-        // TODO With functional interfaces used directly
+        authors.stream().filter(author -> author.active).filter(author-> author.books.stream().anyMatch(book-> book.published)).forEach(System.out::println);
 
     }
 
