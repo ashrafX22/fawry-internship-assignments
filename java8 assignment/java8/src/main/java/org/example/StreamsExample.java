@@ -48,7 +48,6 @@ public class StreamsExample {
 
 
         banner("Active books for all authors");
-
         Predicate<Book> publishedBooks =  new Predicate<Book>() {
             @Override
             public boolean test(Book book) {
@@ -66,9 +65,13 @@ public class StreamsExample {
         banner("Active books for all authors - lambda");
         authors.stream().filter(author -> author.books.stream().anyMatch(book-> book.published)).forEach(System.out::println);
 
+
+
         banner("Average price for all books in the library");
 
         banner("Average price for all books in the library - lambda");
+        double averagePrice = authors.stream().flatMapToDouble(author -> author.books.stream().mapToDouble(Book::getPrice)).average().orElse(0);
+        System.out.println(averagePrice);
 
 
         banner("Active authors that have at least one published book");
@@ -135,6 +138,10 @@ class Book {
         this.name = name;
         this.price = price;
         this.published = published;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     @Override
