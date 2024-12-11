@@ -27,6 +27,21 @@ class AccountManagerImplTest {
         assertEquals("insufficient account balance", resualt);
     }
 
+    @Test
+    void withdraw_with_maximum_credit_by_normal_customer() {
+        AccountManager accountManager = new AccountManagerImpl();
+        Customer customer = new Customer("ahsraf",1000,true,false);
+        String resualt = accountManager.withdraw(customer,2000);
+        assertEquals("success", resualt);
+    }
+
+    @Test
+    void withdraw_with_maximum_credit_exceeded_by_normal_customer() {
+        AccountManager accountManager = new AccountManagerImpl();
+        Customer customer = new Customer("ahsraf",900,true,false);
+        String resualt = accountManager.withdraw(customer,2000);
+        assertEquals("maximum credit exceeded", resualt);
+    }
 
 
 }
