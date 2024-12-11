@@ -45,4 +45,20 @@ class AccountManagerImplTest {
         String result = accountManager.withdraw(customer,2000);
         assertEquals("maximum credit exceeded", result);
     }
+
+    @Test
+    void withdraw_with_credit_NOT_allowed_by_vip_customer() {
+        AccountManager accountManager = new AccountManagerImpl();
+        Customer customer = new Customer("ahsraf",2000,false,true);
+        String result = accountManager.withdraw(customer,5000);
+        assertEquals("insufficient account balance", result);
+    }
+
+    @Test
+    void withdraw_with_credit_allowed_by_vip_customer(){
+        AccountManager accountManager = new AccountManagerImpl();
+        Customer customer = new Customer("ahsraf",2000,true,true);
+        String result = accountManager.withdraw(customer,50000);
+        assertEquals("success", result);
+    }
 }
