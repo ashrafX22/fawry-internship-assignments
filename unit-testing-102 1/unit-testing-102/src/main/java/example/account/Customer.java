@@ -9,6 +9,13 @@ public class Customer {
 //    private int maxCredit = 0;
     private boolean vip;
 
+    public Customer(String name, int balance, boolean creditAllowed, boolean vip) {
+        this.name = name;
+        this.balance = balance;
+        this.creditAllowed = creditAllowed;
+        this.vip = vip;
+    }
+
     public String getName() {
         return name;
     }
