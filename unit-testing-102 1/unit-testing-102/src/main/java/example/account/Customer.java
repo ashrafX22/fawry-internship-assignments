@@ -15,6 +15,7 @@ public class Customer {
         this.creditAllowed = creditAllowed;
         this.vip = vip;
     }
+    public Customer(){}
 
     public String getName() {
         return name;
