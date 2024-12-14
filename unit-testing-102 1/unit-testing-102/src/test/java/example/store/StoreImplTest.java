@@ -48,5 +48,22 @@ class StoreImplTest {
         assertThrows(RuntimeException.class, () -> store.buy(product, customer));
     }
 
+    @Test
+    void givenProductWithValidQuantity_whenWithdrawDoesNotReturnSuccess_thenThrowException() {
+        //Given
+        Product product = new Product();
+        Customer customer = new Customer();
+        product.setQuantity(7);
+        product.setPrice(700);
+
+        //When
+        AccountManager accountManager = Mockito.mock(AccountManagerImpl.class);
+        Mockito.when(accountManager.withdraw(customer, product.getPrice())).thenReturn("insufficient account balance");
+        Store store = new StoreImpl(accountManager);
+
+        //Then
+        assertThrows(RuntimeException.class, () -> store.buy(product, customer));
+    }
+
 
 }
