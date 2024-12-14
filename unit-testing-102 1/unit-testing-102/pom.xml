@@ -14,6 +14,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>@{argLine} -javaagent:"${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.15.4/byte-buddy-agent-1.15.4.jar"</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -21,13 +44,14 @@
             <version>5.11.3</version>
             <scope>test</scope>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <artifactId>mockito-core</artifactId>
+            <version>5.14.2</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
 </project>
