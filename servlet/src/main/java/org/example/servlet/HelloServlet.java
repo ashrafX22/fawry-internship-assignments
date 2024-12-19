@@ -1,16 +1,17 @@
 package org.example.servlet;
 
 import java.io.*;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+@WebServlet(name = "ProductCRUD", value = "/products")
 public class HelloServlet extends HttpServlet {
+    private final List<Product> products = ProductRepository.getProducts();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-        out.println("<h1>Hello World!</h1>");
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+            res.setContentType("application/json");
     }
 }
