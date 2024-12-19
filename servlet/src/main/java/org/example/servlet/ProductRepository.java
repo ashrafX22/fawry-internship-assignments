@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 public class ProductRepository {
     public static List<Product> getProducts() {
-        return IntStream.range(1, 501) // Generates numbers from 1 to 500
+        return IntStream.range(1, 100) // Generates numbers from 1 to 100
                 .mapToObj(i -> ProductFactory.createProduct(
                         (long) i,
                         "Product " + i,
