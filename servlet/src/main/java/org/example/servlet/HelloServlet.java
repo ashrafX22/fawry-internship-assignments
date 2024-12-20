@@ -1,8 +1,8 @@
 package org.example.servlet;
 
 import java.io.*;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -16,7 +16,23 @@ public class HelloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
             res.setContentType("application/json");
-            res.getWriter().write(gson.toJson(products));
+            Map<String, String> params = new HashMap<>();
+            req.getParameterMap().forEach((key, value) -> params.put(key, value[0]));
+            List<Product>filteredProducts = products;
+            if(params.containsKey("id")){
+                filteredProducts = filteredProducts.stream().filter(product -> product.getId() == Long.parseLong(params.get("id"))).collect(Collectors.toList());
+            }
+            if(params.containsKey("name")){
+                filteredProducts = filteredProducts.stream().filter(product -> product.getName().toLowerCase().contains(params.get("name").toLowerCase())).collect(Collectors.toList());
+            }
+            if(params.containsKey("price")){
+                filteredProducts = filteredProducts.stream().filter(product -> product.getPrice() == Double.parseDouble(params.get("price"))).collect(Collectors.toList());
+            }
+            if(params.containsKey("quantity")){
+                filteredProducts = filteredProducts.stream().filter(product -> product.getQuantity() == Integer.parseInt(params.get("quantity"))).collect(Collectors.toList());
+            }
+            res.getWriter().write(gson.toJson(filteredProducts));
+
             res.getWriter().flush();
     }
 
